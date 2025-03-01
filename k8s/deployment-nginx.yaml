@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel-nginx
+  namespace: larakube
+  labels:
+    app: laravel-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: laravel-nginx
+  template:
+    metadata:
+      name: laravel-nginx
+      labels:
+        app: laravel-nginx
+    spec:
+      containers:
+        - name: laravel-nginx
+          image: ghcr.io/lara-kube/nginx-app:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: larakube-env
+          volumeMounts:
+            - mountPath: /var/www/storage
+              name: storage
+          resources:
+            limits:
+              cpu: 200m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /
+            initialDelaySeconds: 30
+            periodSeconds: 10
+      restartPolicy: Always
+      volumes:
+        - name: storage
+          persistentVolumeClaim:
+            claimName: larakube-pvc

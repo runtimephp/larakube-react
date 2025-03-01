@@ -18,11 +18,11 @@ services:
         networks:
             - lara-kube
 
-    queue:
+    horizon:
         image: ghcr.io/lara-kube/php:8.4
-        container_name: lara-kube-worker
+        container_name: lara-kube-horizon
         environment:
-            - APP_ROLE=worker
+            - APP_ROLE=horizon
             - PHP_OPCACHE_ENABLE=1
             - PHP_OPCACHE_CLI=1
             - PHP_OPCACHE_REVALIDATE_FREQ=60

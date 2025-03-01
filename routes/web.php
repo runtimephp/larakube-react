@@ -1,9 +1,11 @@
 <?php
 
+use App\Jobs\CreateKubernetesClusterJob;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
+    CreateKubernetesClusterJob::dispatch();
     return Inertia::render('welcome');
 })->name('home');
 
