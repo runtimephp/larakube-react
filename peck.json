@@ -1,0 +1,20 @@
+{
+    "preset": "laravel",
+    "ignore": {
+        "words": [
+            "php",
+            "Hetzner",
+            "vswitch",
+            "IPV4",
+            "ipv4",
+            "ipv6",
+            "IPV6",
+            "subnets",
+            "Subnet",
+            "Paginator",
+            "kubernetes",
+            "ipv"
+        ],
+        "paths": []
+    }
+}

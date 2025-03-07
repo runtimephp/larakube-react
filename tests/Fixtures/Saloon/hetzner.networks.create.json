@@ -1,0 +1,22 @@
+{
+    "statusCode": 201,
+    "headers": {
+        "Date": "Fri, 07 Mar 2025 08:29:07 GMT",
+        "Content-Type": "application\/json",
+        "Content-Length": "867",
+        "Connection": "keep-alive",
+        "ratelimit-limit": "3600",
+        "ratelimit-remaining": "3599",
+        "ratelimit-reset": "1741336148",
+        "X-Correlation-Id": "a6059959534ba0769d57f1d1b132bb41",
+        "Traceparent": "00-a6059959534ba0769d57f1d1b132bb41-6aa2c90dac5405aa-01",
+        "Uber-Trace-Id": "a6059959534ba0769d57f1d1b132bb41:6aa2c90dac5405aa:0:1",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS,GET,POST,PUT,PATCH,DELETE",
+        "Access-Control-Allow-Headers": "X-Requested-With,Authorization,Content-Type",
+        "Access-Control-Expose-Headers": "Link,X-Correlation-ID",
+        "Access-Control-Max-Age": "86400"
+    },
+    "data": "{\n    \"network\": {\n        \"name\": \"test-network\",\n        \"created\": \"2025-03-07T08:29:07Z\",\n        \"id\": 10753665,\n        \"ip_range\": \"172.16.0.0\/16\",\n        \"labels\": {\n            \"environment\": \"production\",\n            \"network\": \"test-network\",\n            \"team\": \"devops\"\n        },\n        \"load_balancers\": [],\n        \"servers\": [],\n        \"protection\": {\n            \"delete\": false\n        },\n        \"routes\": [\n            {\n                \"destination\": \"10.100.1.0\/24\",\n                \"gateway\": \"172.16.1.1\"\n            }\n        ],\n        \"subnets\": [\n            {\n                \"gateway\": \"172.16.0.1\",\n                \"ip_range\": \"172.16.1.0\/24\",\n                \"network_zone\": \"eu-central\",\n                \"type\": \"cloud\",\n                \"vswitch_id\": null\n            }\n        ],\n        \"expose_routes_to_vswitch\": false\n    }\n}"
+}

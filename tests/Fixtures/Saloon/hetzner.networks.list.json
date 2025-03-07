@@ -1,0 +1,24 @@
+{
+    "statusCode": 200,
+    "headers": {
+        "Date": "Fri, 07 Mar 2025 08:03:31 GMT",
+        "Content-Type": "application\/json",
+        "Content-Length": "1182",
+        "Connection": "keep-alive",
+        "Vary": "Accept-Encoding",
+        "ratelimit-limit": "3600",
+        "ratelimit-remaining": "3599",
+        "ratelimit-reset": "1741334612",
+        "X-Correlation-Id": "072c5aece18afc08b91f68ef7c9531ad",
+        "Link": "<https:\/\/api.hetzner.cloud\/v1\/networks?page=1&per_page=25>; rel=\"last\"",
+        "Traceparent": "00-072c5aece18afc08b91f68ef7c9531ad-e94eeab76f756e52-01",
+        "Uber-Trace-Id": "072c5aece18afc08b91f68ef7c9531ad:e94eeab76f756e52:0:1",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "OPTIONS,GET,POST,PUT,PATCH,DELETE",
+        "Access-Control-Allow-Headers": "X-Requested-With,Authorization,Content-Type",
+        "Access-Control-Expose-Headers": "Link,X-Correlation-ID",
+        "Access-Control-Max-Age": "86400"
+    },
+    "data": "{\n    \"meta\": {\n        \"pagination\": {\n            \"last_page\": 1,\n            \"next_page\": null,\n            \"page\": 1,\n            \"per_page\": 25,\n            \"previous_page\": null,\n            \"total_entries\": 1\n        }\n    },\n    \"networks\": [\n        {\n            \"name\": \"mynet\",\n            \"created\": \"2025-03-06T22:30:35Z\",\n            \"id\": 10752197,\n            \"ip_range\": \"10.0.0.0\/16\",\n            \"labels\": {\n                \"environment\": \"prod\",\n                \"larakube.com\": \"label\"\n            },\n            \"load_balancers\": [],\n            \"servers\": [],\n            \"protection\": {\n                \"delete\": false\n            },\n            \"routes\": [\n                {\n                    \"destination\": \"10.100.1.0\/24\",\n                    \"gateway\": \"10.0.1.1\"\n                }\n            ],\n            \"subnets\": [\n                {\n                    \"gateway\": \"10.0.0.1\",\n                    \"ip_range\": \"10.0.1.0\/24\",\n                    \"network_zone\": \"eu-central\",\n                    \"type\": \"cloud\",\n                    \"vswitch_id\": null\n                }\n            ],\n            \"expose_routes_to_vswitch\": false\n        }\n    ]\n}"
+}
