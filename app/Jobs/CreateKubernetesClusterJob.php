@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 
-class CreateKubernetesClusterJob implements ShouldQueue
+final class CreateKubernetesClusterJob implements ShouldQueue
 {
-    use Queueable;
     use Dispatchable;
+    use Queueable;
 
     /**
      * Create a new job instance.

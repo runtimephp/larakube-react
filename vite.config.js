@@ -15,6 +15,9 @@ export default defineConfig({
         react(),
         tailwindcss(),
     ],
+    server: {
+        host: 'larakube.test'
+    },
     esbuild: {
         jsx: 'automatic',
     },
