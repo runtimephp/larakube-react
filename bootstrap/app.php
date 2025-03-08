@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\HandleOrganizationRequest;
 use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -16,6 +17,14 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         channels: __DIR__.'/../routes/channels.php',
         health: '/up',
+        then: function (Application $app): void {
+            $router = $app->make('router');
+            $router->middleware(['web', 'auth', 'verified', 'organization'])
+                ->prefix('{organization}')
+                ->group(function (): void {
+                    require base_path('routes/organization.php');
+                });
+        },
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->web(
@@ -24,8 +33,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 AddLinkHeadersForPreloadedAssets::class,
             ]
         );
-        $middleware->redirectUsersTo(function (Request $request): string {
 
+        $middleware->alias(['organization' => HandleOrganizationRequest::class]);
+
+        $middleware->redirectUsersTo(function (Request $request): string {
             $user = $request->user();
             assert($user instanceof User);
 
