@@ -68,6 +68,11 @@ final class User extends Authenticatable
             ->withPivot('role');
     }
 
+    public function belongsToOrganization(int $organizationId): bool
+    {
+        return $this->organizations->contains('id', $organizationId);
+    }
+
     /**
      * Get the attributes that should be cast.
      *

@@ -2,15 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
-
 test('it renders the page', function (): void {
 
-    $user = User::factory()
-        ->createQuietly();
+    $user = $this->createUserWithOrganization();
 
     $this->actingAs($user)
-        ->get(route('clusters.index'))
+        ->get(route('clusters.index', ['organization' => $user->organizations()->first()->slug]))
         ->assertOk();
 
 });

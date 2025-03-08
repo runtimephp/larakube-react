@@ -4,9 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Actions\Organization\GetCurrentOrganizationAction;
+use App\Actions\Organization\GetUserOrganizationsAction;
+use App\Http\Resources\OrganizationResource;
+use Exception;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+
+use function app;
 
 final class HandleInertiaRequests extends Middleware
 {
@@ -35,6 +41,8 @@ final class HandleInertiaRequests extends Middleware
      * @see https://inertiajs.com/shared-data
      *
      * @return array<string, mixed>
+     *
+     * @throws Exception
      */
     public function share(Request $request): array
     {
@@ -45,13 +53,30 @@ final class HandleInertiaRequests extends Middleware
 
         [$message, $author] = str($quote)->explode('-');
 
-        return [
+        $payload = [
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => mb_trim((string) $message), 'author' => mb_trim((string) $author)],
+
             'auth' => [
                 'user' => $request->user(),
             ],
         ];
+
+        if ($request->user()) {
+            return [
+                ...$payload,
+                'organizations' => OrganizationResource::collection(
+                    app(GetUserOrganizationsAction::class)->handle($request->user())
+                ),
+
+                'organization' => OrganizationResource::make(
+                    app(GetCurrentOrganizationAction::class)->handle($request->user())
+                ),
+            ];
+        }
+
+        return $payload;
+
     }
 }

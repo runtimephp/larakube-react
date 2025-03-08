@@ -6,6 +6,8 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Models\Organization;
+use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -52,10 +54,14 @@ final class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        assert($user instanceof User);
+        $user->organizations->each(function (Organization $organization) use ($user): void {
+            $user->organizations()->detach($organization->id);
+        });
 
         Auth::logout();
 
-        $user?->delete();
+        $user->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

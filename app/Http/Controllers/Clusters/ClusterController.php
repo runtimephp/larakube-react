@@ -18,7 +18,7 @@ final class ClusterController
         return Inertia::render('clusters/index');
     }
 
-    public function store(StoreClusterRequest $request): RedirectResponse
+    public function store(StoreClusterRequest $request, string $organization): RedirectResponse
     {
 
         $slug = Str::slug($request->string('name')->toString());
@@ -31,7 +31,8 @@ final class ClusterController
         Storage::disk('local')
             ->put($filePath, "Name: {$request->string('name')->toString()}\nSlug: {$slug}\nRegion: {$request->string('region')->toString()}");
 
-        return redirect()->route('clusters.index');
+        return redirect()
+            ->route('clusters.index', ['organization' => $organization]);
 
     }
 }

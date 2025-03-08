@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
-
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('guests are redirected to the login page', function (): void {
@@ -11,7 +9,7 @@ test('guests are redirected to the login page', function (): void {
 });
 
 test('authenticated users can visit the dashboard', function (): void {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = $this->createUserWithOrganization());
 
     $this->get('/dashboard')->assertOk();
 });

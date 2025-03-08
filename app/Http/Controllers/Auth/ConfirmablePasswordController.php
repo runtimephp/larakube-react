@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\Organization\GetCurrentOrganizationAction;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,7 +27,7 @@ final class ConfirmablePasswordController extends Controller
     /**
      * Confirm the user's password.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, GetCurrentOrganizationAction $currentOrganizationAction): RedirectResponse
     {
         if (! Auth::guard('web')->validate([
             'email' => $request->user()?->email,
@@ -37,7 +39,13 @@ final class ConfirmablePasswordController extends Controller
         }
 
         $request->session()->put('auth.password_confirmed_at', time());
+        $user = $request->user();
+        assert($user instanceof User);
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route(
+            name: 'dashboard',
+            parameters: ['organization' => $currentOrganizationAction->handle($user)?->slug],
+            absolute: false
+        ));
     }
 }

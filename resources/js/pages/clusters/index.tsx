@@ -1,6 +1,6 @@
-import type { BreadcrumbItem } from '@/types';
+import type { BreadcrumbItem, SharedData } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { MapPin, Server } from 'lucide-react';
@@ -18,15 +18,11 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import React, { FormEventHandler } from 'react';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Cluters',
-        href: route('clusters.index'),
-    },
-];
+
 
 export default function Clusters() {
 
+    const {organization} = usePage<SharedData>().props;
 
     const [open, setOpen] = React.useState(false);
 
@@ -35,12 +31,17 @@ export default function Clusters() {
         region: 'eu-central-ng',
     });
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Cluters',
+            href: route('clusters.index', {organization: organization?.slug}),
+        },
+    ];
+
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        console.log("Form is being submitted");
-
-        post(route('clusters.index'), {
+        post(route('clusters.index', {organization: organization?.slug}), {
             preserveScroll: true,
             onSuccess: () => {
                 resetForm();

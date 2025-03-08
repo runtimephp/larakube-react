@@ -13,7 +13,7 @@ test('login screen can be rendered', function (): void {
 });
 
 test('users can authenticate using the login screen', function (): void {
-    $user = User::factory()->create();
+    $user = $this->createUserWithOrganization();
 
     $response = $this->post('/login', [
         'email' => $user->email,
@@ -21,7 +21,11 @@ test('users can authenticate using the login screen', function (): void {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect(route(
+        name: 'dashboard',
+        parameters: ['organization' => $user->organizations()->first()->slug],
+        absolute: false
+    ));
 });
 
 test('users can not authenticate with invalid password', function (): void {
@@ -36,7 +40,7 @@ test('users can not authenticate with invalid password', function (): void {
 });
 
 test('users can logout', function (): void {
-    $user = User::factory()->create();
+    $user = $this->createUserWithOrganization();
 
     $response = $this->actingAs($user)->post('/logout');
 

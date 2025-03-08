@@ -61,5 +61,9 @@ test('new users can register', function (): void {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    $response->assertRedirect(route(
+        name: 'dashboard',
+        parameters: ['organization' => auth()->user()->organizations()->first()->slug],
+        absolute: false)
+    );
 });

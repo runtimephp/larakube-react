@@ -18,13 +18,17 @@ test('it adds the currents organization id on the session', function (): void {
         ->createQuietly()
         ->fresh();
 
-    Cache::shouldReceive('put')
-        ->once()
-        ->with('organization:current:'.$user->id, $organization->id);
-
-    $action = app(SetCurrentOrganizationAction::class);
-
     // Act
-    $action->handle($organization->id, $user->id);
+    app(SetCurrentOrganizationAction::class)->handle($organization->id, $user->id);
+
+    $cachedOrganization = Cache::get('organizations:current:'.$user->id);
+
+    // Assert
+    expect($cachedOrganization)
+        ->toBeInstanceOf(Organization::class)
+        ->and($cachedOrganization->id)
+        ->toBe($organization->id);
+
+    Cache::forget('organizations:current:'.$user->id);
 
 });

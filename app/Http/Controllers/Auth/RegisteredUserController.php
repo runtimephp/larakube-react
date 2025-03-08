@@ -46,12 +46,14 @@ final class RegisteredUserController extends Controller
             'password' => Hash::make($request->string('password')->toString()),
         ]);
 
-        $createOrganizationAction->handle($user);
+        $organization = $createOrganizationAction->handle($user);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return to_route('dashboard');
+        return to_route('dashboard', [
+            'organization' => $organization->slug,
+        ]);
     }
 }

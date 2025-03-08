@@ -1,24 +1,11 @@
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuItem } from '@/components/ui/sidebar';
+import { type NavItem, type SharedData } from '@/types';
+import { usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Server } from 'lucide-react';
-import AppLogo from './app-logo';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        url: '/dashboard',
-        icon: LayoutGrid,
-    },
-    {
-        title: 'Clusters',
-        url: route('clusters.index'),
-        icon: Server,
-    }
-];
+import OrganizationManager from '@/components/organization-manager';
 
 const footerNavItems: NavItem[] = [
     {
@@ -34,16 +21,31 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+
+
+    const {organization} = usePage<SharedData>().props;
+
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: 'Dashboard',
+            url: '/dashboard',
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Clusters',
+            url: route('clusters.index', {organization: organization?.slug}),
+            icon: Server,
+        }
+    ];
+
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
-                            <Link href="/dashboard" prefetch>
-                                <AppLogo />
-                            </Link>
-                        </SidebarMenuButton>
+                        <OrganizationManager />
                     </SidebarMenuItem>
                 </SidebarMenu>
             </SidebarHeader>

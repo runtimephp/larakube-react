@@ -24,6 +24,8 @@ final readonly class CreateOrganizationAction
             'config' => [],
         ]);
 
+        $organization->users()->save($user, ['role' => 'admin']);
+
         $this->setCurrentOrganizationAction->handle(
             $organization->id,
             $user->id
