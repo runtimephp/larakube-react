@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\ClusterController;
+use App\Http\Controllers\Clusters\ClusterController;
 use App\Jobs\CreateKubernetesClusterJob;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -17,6 +17,10 @@ Route::middleware(['auth', 'verified'])
     ->prefix('clusters')->as('clusters.')->group(function () {
         Route::get('/', [ClusterController::class, 'index'])
             ->name('index');
+
+        Route::post('/', [ClusterController::class, 'store'])
+            ->name('store');
+
     });
 
 Route::middleware(['auth', 'verified'])->group(function () {

@@ -1,0 +1,3 @@
+Name: Francisco Barrento
+Slug: francisco-barrento
+Region: eu-central-ng
