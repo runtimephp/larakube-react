@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\ClusterController;
 use App\Jobs\CreateKubernetesClusterJob;
-use App\Services\Hetzner\Hetzner;
-use App\Services\Hetzner\Networks\GetAllNetworksRequest;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -14,14 +13,11 @@ Route::get('/', function () {
     return Inertia::render('welcome');
 })->name('home');
 
-Route::get('/networks', function () {
-
-    $hetzner = new Hetzner();
-    $response = $hetzner->send(new GetAllNetworksRequest());
-
-    return $response->json('networks');
-
-})->name('networks');
+Route::middleware(['auth', 'verified'])
+    ->prefix('clusters')->as('clusters.')->group(function () {
+        Route::get('/', [ClusterController::class, 'index'])
+            ->name('index');
+    });
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
