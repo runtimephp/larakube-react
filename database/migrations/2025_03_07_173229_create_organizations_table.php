@@ -17,10 +17,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('owner_id')
                 ->constrained('users');
-            $table->string('name')->unique();
-            $table->string('slug')->unique();
+            $table->string('name');
+            $table->string('slug');
             $table->jsonb('config');
             $table->timestamps();
+
+            $table->unique(['owner_id', 'slug', 'name']);
+
         });
     }
 
