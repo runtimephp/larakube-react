@@ -1,2 +1,0 @@
-Name: dscsdc
-Region: eu-central-ng

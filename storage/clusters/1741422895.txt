@@ -1,3 +1,0 @@
-Name: Cluster 1
-Slug: cluster-1
-Region: us-east-va
