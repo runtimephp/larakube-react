@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import { Head, useForm } from '@inertiajs/react';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
-import { MapPin, PinIcon, Server } from 'lucide-react';
+import { MapPin, Server } from 'lucide-react';
 import {
     Dialog, DialogClose,
     DialogContent,
@@ -30,7 +30,7 @@ export default function Clusters() {
 
     const [open, setOpen] = React.useState(false);
 
-    const { data, setData, post, processing, recentlySuccessful } = useForm({
+    const { data, setData, post } = useForm({
         name: '',
         region: 'eu-central-ng',
     });
