@@ -8,17 +8,28 @@ use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\Str;
 
-final class CreateOrganizationAction
+final readonly class CreateOrganizationAction
 {
+    public function __construct(
+        private SetCurrentOrganizationAction $setCurrentOrganizationAction
+    ) {}
+
     public function handle(User $user): Organization
     {
 
-        return Organization::query()->createQuietly([
+        $organization = Organization::query()->createQuietly([
             'owner_id' => $user->id,
             'name' => $user->name,
             'slug' => Str::slug($user->name),
             'config' => [],
         ]);
+
+        $this->setCurrentOrganizationAction->handle(
+            $organization->id,
+            $user->id
+        );
+
+        return $organization;
 
     }
 }
