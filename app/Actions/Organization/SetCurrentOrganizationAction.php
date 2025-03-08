@@ -13,7 +13,7 @@ final readonly class SetCurrentOrganizationAction
     public function handle(int $organizationId, int $userId): void
     {
         $this->cacheManager->put(
-            'organization:current:'.$userId,
+            'organizations:current:'.$userId,
             $organizationId
         );
     }

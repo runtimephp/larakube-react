@@ -6,6 +6,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -21,6 +22,8 @@ use Illuminate\Notifications\Notifiable;
  * @property string $remember_token
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read Collection<int, Organization> $ownedOrganizations
+ * @property-read Collection<int, Organization> $organizations
  */
 final class User extends Authenticatable
 {
