@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\Organization\CreateOrganizationAction;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
@@ -31,7 +32,7 @@ final class RegisteredUserController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, CreateOrganizationAction $createOrganizationAction): RedirectResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -44,6 +45,8 @@ final class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->string('password')->toString()),
         ]);
+
+        $createOrganizationAction->handle($user);
 
         event(new Registered($user));
 
