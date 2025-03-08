@@ -22,7 +22,7 @@ return new class extends Migration
             $table->jsonb('config');
             $table->timestamps();
 
-            $table->unique(['organization_id', 'provider', 'profile_name']);
+            $table->unique(['organization_id', 'provider', 'name']);
 
         });
     }
