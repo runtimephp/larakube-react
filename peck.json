@@ -13,7 +13,10 @@
             "Subnet",
             "Paginator",
             "kubernetes",
-            "ipv"
+            "ipv",
+            "hillsboro",
+            "ashburn",
+            "falkenstein"
         ],
         "paths": []
     }
