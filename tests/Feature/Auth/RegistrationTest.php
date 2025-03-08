@@ -14,7 +14,7 @@ test('two users can have a different organizations with same name', function ():
         'name' => 'Test User',
     ]);
 
-    (new CreateOrganizationAction())->handle($user);
+    (app(CreateOrganizationAction::class))->handle($user);
 
     $this->post('/register', [
         'name' => 'Test User',

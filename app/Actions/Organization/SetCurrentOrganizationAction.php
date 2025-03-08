@@ -8,7 +8,7 @@ use Illuminate\Cache\CacheManager;
 
 final readonly class SetCurrentOrganizationAction
 {
-    public function __construct(protected CacheManager $cacheManager) {}
+    public function __construct(private CacheManager $cacheManager) {}
 
     public function handle(int $organizationId, int $userId): void
     {

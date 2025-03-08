@@ -8,7 +8,8 @@ use App\Models\User;
 
 test('creates organization', function (): void {
     // Arrange
-    $action = new CreateOrganizationAction();
+
+    $action = app(CreateOrganizationAction::class);
     /** @var User $user */
     $user = User::factory()
         ->createQuietly()
