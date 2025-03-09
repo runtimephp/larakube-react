@@ -25,7 +25,7 @@ final class HandleInertiaRequests extends Middleware
 
     public function __construct(
         private readonly CurrentOrganizationAction $currentOrganizationAction,
-        private UserOrganizationsAction $userOrganizationsAction,
+        private readonly UserOrganizationsAction $userOrganizationsAction,
     ) {}
 
     /**

@@ -33,6 +33,7 @@ if (! function_exists('useOrganization')) {
         app()->instance('current.organization.id', $organization->id);
 
         $user?->currentOrganization()->associate($organization);
+        $user?->save();
 
         return $organization;
 

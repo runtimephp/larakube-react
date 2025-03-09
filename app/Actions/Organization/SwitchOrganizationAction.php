@@ -13,6 +13,8 @@ final readonly class SwitchOrganizationAction
 {
     public function handle(User $user, Organization $organization): Organization
     {
+
         return useOrganization($organization, $user);
+
     }
 }
