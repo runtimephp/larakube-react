@@ -9,9 +9,12 @@ use App\Models\Organization;
 use function function_exists;
 
 if (! function_exists('organization')) {
-    function organization(): Organization
+    function organization(): ?Organization
     {
-        return app('current.organization');
+
+        return app()->has('current.organization')
+            ? app('current.organization')
+            : null;
     }
 }
 

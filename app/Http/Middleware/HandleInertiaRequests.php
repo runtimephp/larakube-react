@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Actions\Organization\GetCurrentOrganizationAction;
-use App\Actions\Organization\GetUserOrganizationsAction;
+use App\Actions\Organization\GetOrganizationsByUserAction;
 use App\Http\Resources\OrganizationResource;
 use Exception;
 use Illuminate\Foundation\Inspiring;
@@ -13,6 +12,7 @@ use Illuminate\Http\Request;
 use Inertia\Middleware;
 
 use function app;
+use function App\Support\Organization\organization;
 
 final class HandleInertiaRequests extends Middleware
 {
@@ -67,12 +67,10 @@ final class HandleInertiaRequests extends Middleware
             return [
                 ...$payload,
                 'organizations' => OrganizationResource::collection(
-                    app(GetUserOrganizationsAction::class)->handle($request->user())
+                    app(GetOrganizationsByUserAction::class)->handle($request->user())
                 ),
 
-                'organization' => OrganizationResource::make(
-                    app(GetCurrentOrganizationAction::class)->handle($request->user())
-                ),
+                'organization' => OrganizationResource::make(organization()),
             ];
         }
 

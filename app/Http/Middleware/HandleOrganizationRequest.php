@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Actions\Organization\GetCurrentOrganizationAction;
+use App\Actions\Organization\GetOrganizationBySlugAction;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+use function abort;
+use function App\Support\Organization\useOrganization;
+use function is_string;
+
 final readonly class HandleOrganizationRequest
 {
     public function __construct(
-        private GetCurrentOrganizationAction $getCurrentOrganizationAction,
+        private GetOrganizationBySlugAction $getOrganizationBySlugAction,
     ) {
         //
     }
@@ -29,10 +33,21 @@ final readonly class HandleOrganizationRequest
         $user = $request->user();
         assert($user instanceof User);
 
-        $this->getCurrentOrganizationAction->handle(
-            user: $user,
-        );
+        $organizationSlug = $request->route('organization');
 
-        return $next($request);
+        if ($organizationSlug && is_string($organizationSlug)) {
+            $organization = $this->getOrganizationBySlugAction->handle(
+                $organizationSlug
+            );
+
+            if ($organization && $user->belongsToOrganization($organization->id)) {
+                useOrganization($organization);
+
+                return $next($request);
+            }
+
+        }
+
+        abort(Response::HTTP_FORBIDDEN);
     }
 }

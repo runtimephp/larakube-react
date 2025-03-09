@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Actions\Organization\GetUserOrganizationsAction;
+use App\Actions\Organization\GetOrganizationsByUserAction;
 use App\Models\Organization;
 use App\Models\User;
 
@@ -27,7 +27,7 @@ test('it returns the user organizations', function (): void {
         ->fresh();
 
     // Act
-    $organizations = app(GetUserOrganizationsAction::class)
+    $organizations = app(GetOrganizationsByUserAction::class)
         ->handle($user);
 
     expect($organizations->count())->toBe(2);
