@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { type NavItem, type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Server } from 'lucide-react';
-import OrganizationManager from '@/components/organization-manager';
+import OrganizationManager from '@/components/organization/organization-manager';
 
 const footerNavItems: NavItem[] = [
     {

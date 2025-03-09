@@ -11,7 +11,8 @@ use Illuminate\Support\Str;
 final readonly class CreateOrganizationAction
 {
     public function __construct(
-        private SwitchOrganizationAction $switchOrganization
+        private SwitchOrganizationAction $switchOrganization,
+        private WarmUpUserOrganizationsCacheAction $warmUpUserOrganizationsCacheAction,
     ) {}
 
     public function handle(User $user, ?string $name = null): Organization
@@ -27,6 +28,9 @@ final readonly class CreateOrganizationAction
         ]);
 
         $organization->users()->save($user, ['role' => 'owner']);
+        $user->refresh();
+
+        $this->warmUpUserOrganizationsCacheAction->handle($user);
 
         return $this->switchOrganization->handle(
             user: $user,

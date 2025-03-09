@@ -17,7 +17,7 @@ final readonly class CurrentOrganizationAction
 
         $organization = organization();
 
-        if (!$organization instanceof \App\Models\Organization && $user->current_organization_id) {
+        if (! $organization instanceof Organization && $user->current_organization_id) {
             $organization = Organization::query()->find($user->current_organization_id);
         }
 

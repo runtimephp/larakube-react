@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Clusters\ClusterController;
+use App\Http\Controllers\Organizations\OrganizationController;
 use App\Http\Controllers\Organizations\SwitchOrganizationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,6 +23,9 @@ Route::prefix('clusters')->as('clusters.')->group(function () {
 });
 
 Route::group(['prefix' => 'organizations', 'as' => 'organizations.'], function () {
+
+    Route::post('/', [OrganizationController::class, 'store'])
+        ->name('store');
 
     Route::post('/switch', [SwitchOrganizationController::class, 'store'])
         ->name('switch');

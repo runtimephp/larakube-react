@@ -3,7 +3,7 @@ import type { SharedData } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { SidebarMenuButton } from '@/components/ui/sidebar';
 import { useInitials } from '@/hooks/use-initials';
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown, PlusCircle } from 'lucide-react';
 import {
     Command,
     CommandEmpty, CommandGroup,
@@ -13,11 +13,13 @@ import {
     CommandSeparator
 } from '@/components/ui/command';
 import React from 'react';
+import { useOrganizationDialogStore } from '@/stores/organization-dialog-store';
 
 
 
 export default function OrganizationManager() {
     const [open, setOpen] = React.useState(false);
+    const openCreateDialog = useOrganizationDialogStore(state => state.open);
     const getInitials = useInitials()
     const { organizations, organization: currentOrganization } = usePage<SharedData>().props;
 
@@ -34,6 +36,11 @@ export default function OrganizationManager() {
             });
 
     }
+
+    const handleCreateOrganization = () => {
+        setOpen(false);
+        openCreateDialog();
+    };
 
     return (
         <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -92,8 +99,13 @@ export default function OrganizationManager() {
                         <CommandItem>
                             Organization Settings
                         </CommandItem>
-                        <CommandItem>
-                            <div>Create New Organization</div>
+                        <CommandItem
+                            className="cursor-pointer"
+                            onSelect={handleCreateOrganization}>
+                            <div className="flex items-center">
+                                <PlusCircle className="mr-2 h-4 w-4" />
+                                Create New Organization
+                            </div>
                         </CommandItem>
                     </CommandGroup>
                     </CommandList>
