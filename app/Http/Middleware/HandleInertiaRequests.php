@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Actions\Organization\CurrentOrganizationAction;
 use App\Actions\Organization\UserOrganizationsAction;
 use App\Http\Resources\OrganizationResource;
 use Exception;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-
-use function app;
-use function App\Support\Organization\organization;
 
 final class HandleInertiaRequests extends Middleware
 {
@@ -24,6 +22,11 @@ final class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+
+    public function __construct(
+        private readonly CurrentOrganizationAction $currentOrganizationAction,
+        private UserOrganizationsAction $userOrganizationsAction,
+    ) {}
 
     /**
      * Determines the current asset version.
@@ -67,10 +70,12 @@ final class HandleInertiaRequests extends Middleware
             return [
                 ...$payload,
                 'organizations' => OrganizationResource::collection(
-                    app(UserOrganizationsAction::class)->handle($request->user())
+                    $this->userOrganizationsAction->handle($request->user())
                 ),
 
-                'organization' => OrganizationResource::make(organization()),
+                'organization' => OrganizationResource::make(
+                    $this->currentOrganizationAction->handle($request->user())
+                ),
             ];
         }
 
