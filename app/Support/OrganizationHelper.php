@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Support\Organization;
 
 use App\Models\Organization;
+use App\Models\User;
 
 use function function_exists;
 
@@ -26,9 +27,14 @@ if (! function_exists('organizationId')) {
 }
 
 if (! function_exists('useOrganization')) {
-    function useOrganization(Organization $organization): void
+    function useOrganization(Organization $organization, ?User $user = null): Organization
     {
         app()->instance('current.organization', $organization);
         app()->instance('current.organization.id', $organization->id);
+
+        $user?->currentOrganization()->associate($organization);
+
+        return $organization;
+
     }
 }

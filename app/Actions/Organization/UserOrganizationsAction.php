@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Cache\Repository;
 use Illuminate\Database\Eloquent\Collection;
 
-final readonly class GetOrganizationsByUserAction
+final readonly class UserOrganizationsAction
 {
     public function __construct(
         private Repository $cache

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Actions\Organization\GetOrganizationBySlugAction;
+use App\Actions\Organization\OrganizationBySlugAction;
 use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ use function is_string;
 final readonly class HandleOrganizationRequest
 {
     public function __construct(
-        private GetOrganizationBySlugAction $getOrganizationBySlugAction,
+        private OrganizationBySlugAction $getOrganizationBySlugAction,
     ) {
         //
     }
@@ -35,12 +35,12 @@ final readonly class HandleOrganizationRequest
 
         $organizationSlug = $request->route('organization');
 
-        if ($organizationSlug && is_string($organizationSlug)) {
+        if ($organizationSlug && is_string($organizationSlug) && $user->belongsToOrganization($organizationSlug)) {
             $organization = $this->getOrganizationBySlugAction->handle(
                 $organizationSlug
             );
 
-            if ($organization && $user->belongsToOrganization($organization->id)) {
+            if ($organization instanceof \App\Models\Organization) {
                 useOrganization($organization);
 
                 return $next($request);
@@ -48,6 +48,6 @@ final readonly class HandleOrganizationRequest
 
         }
 
-        abort(Response::HTTP_FORBIDDEN);
+        abort(Response::HTTP_NOT_FOUND);
     }
 }

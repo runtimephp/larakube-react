@@ -8,7 +8,7 @@ use App\Models\User;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-test('two users can have a different organizations with same name', function (): void {
+test('two users with same name will have organization with same name but with different slugs', function (): void {
 
     $user = User::factory()->createQuietly([
         'name' => 'Test User',
@@ -61,9 +61,8 @@ test('new users can register', function (): void {
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route(
+    $response->assertRedirect(organization_route(
         name: 'dashboard',
-        parameters: ['organization' => auth()->user()->organizations()->first()->slug],
         absolute: false)
     );
 });

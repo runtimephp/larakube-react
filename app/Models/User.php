@@ -8,6 +8,7 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -22,8 +23,10 @@ use Illuminate\Notifications\Notifiable;
  * @property string $remember_token
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property int $current_organization_id
  * @property-read Collection<int, Organization> $ownedOrganizations
  * @property-read Collection<int, Organization> $organizations
+ * @property-read Organization $currentOrganization
  */
 final class User extends Authenticatable
 {
@@ -39,6 +42,7 @@ final class User extends Authenticatable
         'name',
         'email',
         'password',
+        'current_organization_id',
     ];
 
     /**
@@ -50,6 +54,14 @@ final class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    /**
+     * @return BelongsTo<Organization, $this>
+     */
+    public function currentOrganization(): BelongsTo
+    {
+        return $this->belongsTo(Organization::class, 'current_organization_id', 'id');
+    }
 
     /**
      * @return HasMany<Organization, $this>
@@ -68,9 +80,9 @@ final class User extends Authenticatable
             ->withPivot('role');
     }
 
-    public function belongsToOrganization(int $organizationId): bool
+    public function belongsToOrganization(string $slug): bool
     {
-        return $this->organizations->contains('id', $organizationId);
+        return $this->organizations->contains('slug', $slug);
     }
 
     /**

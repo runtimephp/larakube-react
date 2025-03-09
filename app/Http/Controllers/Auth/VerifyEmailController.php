@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\Actions\Organization\GetCurrentOrganizationAction;
+use App\Actions\Organization\CurrentOrganizationAction;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Auth\Events\Verified;
@@ -13,6 +13,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 
 use function assert;
+use function organization_route;
 
 /** @codeCoverageIgnore  */
 final class VerifyEmailController extends Controller
@@ -20,7 +21,7 @@ final class VerifyEmailController extends Controller
     /**
      * Mark the authenticated user's email address as verified.
      */
-    public function __invoke(EmailVerificationRequest $request, GetCurrentOrganizationAction $currentOrganizationAction): RedirectResponse
+    public function __invoke(EmailVerificationRequest $request, CurrentOrganizationAction $currentOrganizationAction): RedirectResponse
     {
         $user = $request->user();
 
@@ -35,9 +36,8 @@ final class VerifyEmailController extends Controller
 
         assert($user instanceof User);
 
-        return redirect()->intended(route(
+        return redirect()->intended(organization_route(
             name: 'dashboard',
-            parameters: ['organization' => $currentOrganizationAction->handle($user)?->slug],
             absolute: false
         ).'?verified=1');
     }

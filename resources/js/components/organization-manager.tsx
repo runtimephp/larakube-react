@@ -21,12 +21,17 @@ export default function OrganizationManager() {
     const getInitials = useInitials()
     const { organizations, organization } = usePage<SharedData>().props;
 
-    const switchOrganization = (organizationId: number) =>
+    const switchOrganization = (slug: string) =>
     {
 
         setOpen(false);
-        const url = route('organizations.switch', { organization: organization?.slug, routeName: route().current() });
-        router.post(url, { organizationId: organizationId });
+        const url = route('organizations.switch', { organization: organization?.slug });
+        router.post(
+            url,
+            {
+                slug: slug,
+                routeName: route().current()
+            });
 
     }
 
@@ -63,7 +68,7 @@ export default function OrganizationManager() {
                                         disabled={org.id === organization?.id}
 
                                     >
-                                        <div onClick={() => switchOrganization(org.id)}>
+                                        <div onClick={() => switchOrganization(org.slug)}>
                                             {org.name}
                                         </div>
                                     </CommandItem>

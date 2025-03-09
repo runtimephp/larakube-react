@@ -11,27 +11,48 @@ use Illuminate\Support\Str;
 final readonly class CreateOrganizationAction
 {
     public function __construct(
-        private SetCurrentOrganizationAction $setCurrentOrganizationAction
+        private SwitchOrganizationAction $switchOrganization
     ) {}
 
-    public function handle(User $user): Organization
+    public function handle(User $user, ?string $name = null): Organization
     {
 
         $organization = Organization::query()->createQuietly([
             'owner_id' => $user->id,
-            'name' => $user->name,
-            'slug' => Str::slug($user->name),
+            'name' => $name ??= $user->name,
+            'slug' => $this->generateUniqueSlug(
+                Str::slug($name)
+            ),
             'config' => [],
         ]);
 
-        $organization->users()->save($user, ['role' => 'admin']);
+        $organization->users()->save($user, ['role' => 'owner']);
 
-        $this->setCurrentOrganizationAction->handle(
-            $organization->id,
-            $user->id
+        return $this->switchOrganization->handle(
+            user: $user,
+            organization: $organization
         );
 
-        return $organization;
+    }
 
+    private function generateUniqueSlug(string $baseSlug): string
+    {
+        $slug = $baseSlug;
+        $counter = 1;
+
+        // Keep checking until we find a unique slug
+        while ($this->slugExists($slug)) {
+            $counter++;
+            $slug = $baseSlug.'-'.$counter;
+        }
+
+        return $slug;
+    }
+
+    private function slugExists(string $slug): bool
+    {
+        return Organization::query()
+            ->where('slug', $slug)
+            ->exists();
     }
 }

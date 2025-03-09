@@ -8,6 +8,8 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
+use function App\Support\Organization\useOrganization;
+
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('email verification screen can be rendered', function (): void {
@@ -15,6 +17,7 @@ test('email verification screen can be rendered', function (): void {
 
     $organization = Organization::factory()->for($user, 'owner')->create();
     $user->organizations()->save($organization, ['role' => 'owner']);
+    useOrganization($organization);
 
     $response = $this->actingAs($user)->get('/verify-email');
 
@@ -24,8 +27,13 @@ test('email verification screen can be rendered', function (): void {
 test('email can be verified', function (): void {
     $user = User::factory()->unverified()->create();
 
-    $organization = Organization::factory()->for($user, 'owner')->create();
-    $user->organizations()->save($organization, ['role' => 'owner']);
+    $organization = Organization::factory()
+        ->for($user, 'owner')
+        ->create();
+    $user->organizations()
+        ->save($organization, ['role' => 'owner']);
+
+    useOrganization($organization, $user);
 
     Event::fake();
 
@@ -39,10 +47,10 @@ test('email can be verified', function (): void {
 
     Event::assertDispatched(Verified::class);
     expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
-    $response->assertRedirect(route(
+    $response->assertRedirect(organization_route(
         name: 'dashboard',
-        parameters: ['organization' => auth()->user()->organizations()->first()->slug],
-        absolute: false).'?verified=1');
+        absolute: false).'?verified=1'
+    );
 });
 
 test('email is not verified with invalid hash', function (): void {

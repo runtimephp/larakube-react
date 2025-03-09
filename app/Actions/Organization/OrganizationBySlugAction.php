@@ -7,7 +7,7 @@ namespace App\Actions\Organization;
 use App\Models\Organization;
 use Illuminate\Cache\Repository;
 
-final readonly class GetOrganizationBySlugAction
+final readonly class OrganizationBySlugAction
 {
     public function __construct(private Repository $cache) {}
 

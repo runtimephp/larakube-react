@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Actions\Organization\SetCurrentOrganizationAction;
+use App\Actions\Organization\SwitchOrganizationAction;
 use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Support\Facades\Cache;
@@ -19,9 +19,13 @@ test('it adds the currents organization id on the session', function (): void {
         ->fresh();
 
     // Act
-    app(SetCurrentOrganizationAction::class)->handle($organization->id, $user->id);
+    app(SwitchOrganizationAction::class)
+        ->handle(
+            user: $user,
+            organization: $organization
+        );
 
-    $cachedOrganization = Cache::get('organizations:current:'.$user->id);
+    $cachedOrganization = \App\Support\Organization\organization();
 
     // Assert
     expect($cachedOrganization)

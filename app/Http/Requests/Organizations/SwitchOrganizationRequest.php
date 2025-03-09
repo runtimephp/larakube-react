@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Organizations;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Symfony\Component\HttpFoundation\Response;
 
+use function abort;
 use function request;
 
 final class SwitchOrganizationRequest extends FormRequest
@@ -15,23 +18,29 @@ final class SwitchOrganizationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-
         return $this->user()
             ? $this->user()
-                ->belongsToOrganization(request()->integer('organizationId'))
+                ->belongsToOrganization(
+                    request()->string('slug')->toString()
+                )
             : false;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
-            'organizationId' => ['required', 'integer', 'exists:organizations,id'],
+            'slug' => ['required', 'string', 'exists:organizations,slug', 'min:5', 'max:255'],
             'routeName' => ['required', 'string'],
         ];
+    }
+
+    protected function failedAuthorization(): void
+    {
+        abort(Response::HTTP_NOT_FOUND);
     }
 }

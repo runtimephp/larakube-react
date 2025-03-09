@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
-use App\Actions\Organization\GetCurrentOrganizationAction;
+use App\Actions\Organization\CurrentOrganizationAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use function App\Support\Organization\useOrganization;
 use function assert;
+use function organization_route;
 
 final class AuthenticatedSessionController extends Controller
 {
@@ -34,7 +36,7 @@ final class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request, GetCurrentOrganizationAction $currentOrganizationAction): RedirectResponse
+    public function store(LoginRequest $request, CurrentOrganizationAction $currentOrganizationAction): RedirectResponse
     {
         $request->authenticate();
 
@@ -43,9 +45,12 @@ final class AuthenticatedSessionController extends Controller
         $user = $request->user();
         assert($user instanceof User);
 
-        return redirect()->intended(route(
+        useOrganization(
+            organization: $currentOrganizationAction->handle($user)
+        );
+
+        return redirect()->intended(organization_route(
             name: 'dashboard',
-            parameters: ['organization' => $currentOrganizationAction->handle($user)?->slug],
             absolute: false
         ));
     }

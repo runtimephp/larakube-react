@@ -17,6 +17,8 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use function to_organization_route;
+
 final class RegisteredUserController extends Controller
 {
     /**
@@ -46,14 +48,12 @@ final class RegisteredUserController extends Controller
             'password' => Hash::make($request->string('password')->toString()),
         ]);
 
-        $organization = $createOrganizationAction->handle($user);
+        $createOrganizationAction->handle($user);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return to_route('dashboard', [
-            'organization' => $organization->slug,
-        ]);
+        return to_organization_route('dashboard');
     }
 }

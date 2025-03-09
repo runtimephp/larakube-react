@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Actions\Organization\GetOrganizationsByUserAction;
+use App\Actions\Organization\UserOrganizationsAction;
 use App\Http\Resources\OrganizationResource;
 use Exception;
 use Illuminate\Foundation\Inspiring;
@@ -67,7 +67,7 @@ final class HandleInertiaRequests extends Middleware
             return [
                 ...$payload,
                 'organizations' => OrganizationResource::collection(
-                    app(GetOrganizationsByUserAction::class)->handle($request->user())
+                    app(UserOrganizationsAction::class)->handle($request->user())
                 ),
 
                 'organization' => OrganizationResource::make(organization()),

@@ -8,6 +8,8 @@ use App\Models\Organization;
 use App\Models\User;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
+use function App\Support\Organization\useOrganization;
+
 abstract class TestCase extends BaseTestCase
 {
     /**
@@ -21,11 +23,18 @@ abstract class TestCase extends BaseTestCase
         array $organizationAttributes = [],
         string $role = 'owner'
     ): ?User {
-        $organization = Organization::factory()->create($organizationAttributes);
 
-        $user = User::factory()->create($userAttributes);
+        $organization = Organization::factory()
+            ->createQuietly($organizationAttributes)
+            ->fresh();
+
+        $user = User::factory()
+            ->createQuietly($userAttributes)
+            ->fresh();
+
+        useOrganization($organization, $user);
+
         $user->organizations()->attach($organization->id, ['role' => $role]);
-        $user->save();
 
         return $user->fresh();
     }

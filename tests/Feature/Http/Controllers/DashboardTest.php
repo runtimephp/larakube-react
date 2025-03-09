@@ -11,5 +11,6 @@ test('guests are redirected to the login page', function (): void {
 test('authenticated users can visit the dashboard', function (): void {
     $this->actingAs($user = $this->createUserWithOrganization());
 
-    $this->get('/dashboard')->assertOk();
+    $this->get(organization_route('dashboard'))
+        ->assertOk();
 });

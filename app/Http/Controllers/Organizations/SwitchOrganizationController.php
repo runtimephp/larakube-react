@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Organizations;
 
-use App\Actions\Organization\GetCurrentOrganizationAction;
-use App\Actions\Organization\SetCurrentOrganizationAction;
+use App\Actions\Organization\OrganizationBySlugAction;
+use App\Actions\Organization\SwitchOrganizationAction;
 use App\Http\Requests\Organizations\SwitchOrganizationRequest;
+use App\Models\Organization;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 
 use function assert;
@@ -15,22 +17,26 @@ final class SwitchOrganizationController
 {
     public function store(
         SwitchOrganizationRequest $request,
-        SetCurrentOrganizationAction $setCurrentOrganizationAction,
-        GetCurrentOrganizationAction $getCurrentOrganizationAction
+        SwitchOrganizationAction $switchOrganization,
+        OrganizationBySlugAction $organizationBySlug,
     ): RedirectResponse {
 
-        assert($request->user() !== null);
+        $user = $request->user();
+        assert($user instanceof User);
 
-        $setCurrentOrganizationAction->handle(
-            organizationId: $request->integer('organizationId'),
-            userId: $request->user()->id
+        $organization = $organizationBySlug->handle(
+            $request->string('slug')->toString()
         );
 
-        $organization = $getCurrentOrganizationAction
-            ->handle($request->user());
+        assert($organization instanceof Organization);
+
+        $switchOrganization->handle(
+            user: $user,
+            organization: $organization
+        );
 
         return redirect()->route($request->string('routeName')->toString(), [
-            'organization' => $organization?->slug,
+            'organization' => $organization->slug,
         ]);
 
     }
