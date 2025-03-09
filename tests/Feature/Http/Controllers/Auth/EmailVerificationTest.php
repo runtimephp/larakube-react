@@ -13,7 +13,10 @@ use function App\Support\Organization\useOrganization;
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('email verification screen can be rendered', function (): void {
-    $user = User::factory()->unverified()->create();
+    $user = User::factory()
+        ->unverified()
+        ->create()
+        ->fresh();
 
     $organization = Organization::factory()->for($user, 'owner')->create();
     $user->organizations()->save($organization, ['role' => 'owner']);
