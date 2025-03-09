@@ -3,7 +3,7 @@ import type { SharedData } from '@/types';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { SidebarMenuButton } from '@/components/ui/sidebar';
 import { useInitials } from '@/hooks/use-initials';
-import { ChevronsUpDown } from 'lucide-react';
+import { Check, ChevronsUpDown } from 'lucide-react';
 import {
     Command,
     CommandEmpty, CommandGroup,
@@ -19,13 +19,13 @@ import React from 'react';
 export default function OrganizationManager() {
     const [open, setOpen] = React.useState(false);
     const getInitials = useInitials()
-    const { organizations, organization } = usePage<SharedData>().props;
+    const { organizations, organization: currentOrganization } = usePage<SharedData>().props;
 
     const switchOrganization = (slug: string) =>
     {
 
         setOpen(false);
-        const url = route('organizations.switch', { organization: organization?.slug });
+        const url = route('organizations.switch', { organization: currentOrganization?.slug });
         router.post(
             url,
             {
@@ -42,11 +42,11 @@ export default function OrganizationManager() {
                     size="lg"
                     className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
                     <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                        {getInitials(organization?.name ?? 'LK')}
+                        {getInitials(currentOrganization?.name ?? 'LK')}
                     </div>
                     <div className="grid flex-1 text-left text-sm leading-tight">
-                        <span className="truncate font-semibold">{organization?.name}</span>
-                        <span className="truncate text-xs">Manage Organization</span>
+                        <span className="truncate font-semibold">{currentOrganization?.name}</span>
+                        <span className="truncate text-xs">Manage Organizations</span>
                     </div>
                     <ChevronsUpDown />
                 </SidebarMenuButton>
@@ -62,14 +62,26 @@ export default function OrganizationManager() {
                             No organizations found
                         </CommandEmpty>
                         <CommandGroup heading="Switch organization">
-                                {organizations?.map((org) => (
+                                {organizations?.map((organization) => (
                                     <CommandItem
-                                        key={org.id}
-                                        disabled={org.id === organization?.id}
+                                        key={organization.id}
 
                                     >
-                                        <div onClick={() => switchOrganization(org.slug)}>
-                                            {org.name}
+                                        <div
+                                            className="flex items-center justify-between space-x-2 w-full cursor-pointer"
+                                            onClick={() => switchOrganization(organization.slug)}
+                                        >
+                                            <div className="flex items-center space-x-2">
+                                                <div className="bg-primary text-primary-foreground flex aspect-square size-6 items-center justify-center rounded-sm text-xs">
+                                                    {getInitials(organization.name)}
+                                                </div>
+                                                <div className="truncate max-w-30">{organization.name}</div>
+                                            </div>
+                                            <div className="item">
+                                                {organization.slug === currentOrganization?.slug ? (
+                                                    <Check />
+                                                ) : null}
+                                            </div>
                                         </div>
                                     </CommandItem>
                                 ))}
