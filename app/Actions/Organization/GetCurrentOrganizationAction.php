@@ -9,7 +9,7 @@ use App\Models\User;
 
 final readonly class GetCurrentOrganizationAction
 {
-    public function handle(User $user): ?Organization
+    public function handle(): ?Organization
     {
         return \App\Support\Organization\organization();
     }
