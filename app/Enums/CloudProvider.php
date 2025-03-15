@@ -11,4 +11,23 @@ enum CloudProvider: string
     case DigitalOcean = 'digitalocean';
     case HetznerCloud = 'hetzner';
 
+    public function name(): string
+    {
+        return match ($this) {
+            self::AWS => 'Amazon Web Services',
+            self::GoogleCloud => 'Google Cloud',
+            self::DigitalOcean => 'DigitalOcean',
+            self::HetznerCloud => 'Hetzner Cloud',
+        };
+    }
+
+    public function logo(): string
+    {
+        return match ($this) {
+            self::AWS => 'aws.svg',
+            self::GoogleCloud => 'google-cloud.svg',
+            self::DigitalOcean => 'DigitalOceanLogo',
+            self::HetznerCloud => 'HetznerLogo',
+        };
+    }
 }

@@ -48,3 +48,14 @@ export interface Organization {
     created_at: string;
     updated_at: string;
 }
+
+export interface CloudAccount {
+    id: number;
+    provider: string;
+    providerName: string;
+    providerLogo: string;
+    name: string;
+    config: { [key: string]: unknown };
+    created_at: string;
+    updated_at: string;
+}

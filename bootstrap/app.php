@@ -20,7 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         then: function (Application $app): void {
             $router = $app->make('router');
             $router->middleware(['auth', 'organization', 'web', 'verified'])
-                ->prefix('{organization}')
+                ->prefix('{organization:slug}')
                 ->group(function (): void {
                     require base_path('routes/organization.php');
                 });

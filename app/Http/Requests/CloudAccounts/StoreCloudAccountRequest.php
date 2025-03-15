@@ -2,14 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Organizations;
+namespace App\Http\Requests\CloudAccounts;
 
+use App\Enums\CloudProvider;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-final class CreateOrganizationRequest extends FormRequest
+use function App\Support\Organization\organization;
+
+final class StoreCloudAccountRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,14 +30,19 @@ final class CreateOrganizationRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'provider' => ['required', 'string', Rule::enum(CloudProvider::class)],
             'name' => [
                 'required',
                 'string',
+                'min:3',
                 'max:255',
-                'min:5',
-                Rule::unique('organizations', 'name')
-                    ->where(fn (Builder $query) => $query->where('owner_id', $this->user()?->id)),
+                Rule::unique('cloud_accounts', 'name')
+                    ->where(fn (Builder $query) => $query
+                        ->where('organization_id', organization()?->id)
+                        ->where('provider', $this->string('provider')->toString())
+                    ),
             ],
+            'key' => ['required', 'string', 'min:3', 'max:255'],
         ];
     }
 }
