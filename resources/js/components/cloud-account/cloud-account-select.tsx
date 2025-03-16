@@ -2,6 +2,7 @@ import CloudAccountIconResolver from '@/components/cloud-account/cloud-account-i
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CloudAccount } from '@/types';
+import { Cloud } from 'lucide-react';
 import React from 'react';
 
 interface CloudAccountSelectProps {
@@ -24,7 +25,14 @@ export default function CloudAccountSelect({ cloudAccounts = null, cloudAccount 
             <Select value={cloudAccountId} onValueChange={(value: string) => setCloudAccountId(value)}>
                 <SelectTrigger>
                     <div className="flex items-center space-x-3">
-                        <CloudAccountIconResolver cloudAccount={cloudAccount} /> <SelectValue placeholder={cloudAccount.name} />
+                        <SelectValue
+                            placeholder={
+                                <div className="flex items-center space-x-3">
+                                    <Cloud />
+                                    <span>Select a cloud account</span>
+                                </div>
+                            }
+                        />
                     </div>
                 </SelectTrigger>
                 <SelectContent>

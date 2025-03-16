@@ -17,7 +17,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, CloudAccount, Organization } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { MapPin, Server } from 'lucide-react';
+import { Server } from 'lucide-react';
 import React, { FormEventHandler } from 'react';
 
 interface ClustersProps {
@@ -101,7 +101,7 @@ export default function Clusters({ organization, cloudAccounts }: ClustersProps)
                                             <Select value={data.region} onValueChange={(value) => setData('region', value)}>
                                                 <SelectTrigger>
                                                     <div className="flex items-center space-x-3">
-                                                        <MapPin /> <SelectValue placeholder="EU Central (Nuremberg)" />
+                                                        <SelectValue placeholder="EU Central (Nuremberg)" />
                                                     </div>
                                                 </SelectTrigger>
                                                 <SelectContent>
