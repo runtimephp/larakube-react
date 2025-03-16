@@ -28,7 +28,7 @@ export default function CloudAccounts({ cloudAccounts }: CloudAccountsProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Cloud Accounts" />
             <OrganizationLayout>
-                <Card className="max-w-5xl">
+                <Card className="w-full">
                     <CardHeader>
                         <CardTitle>New Cloud Account</CardTitle>
                         <CardDescription>Add a new cloud provider account.</CardDescription>

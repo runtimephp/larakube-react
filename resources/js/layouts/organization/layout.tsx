@@ -30,11 +30,11 @@ export default function OrganizationLayout({ children }: PropsWithChildren) {
     ];
 
     return (
-        <div className="mx-auto w-full max-w-7xl px-4 py-6">
+        <div className="mx-auto w-full max-w-svw space-y-6 px-4 py-6 md:max-w-7xl">
             <Heading title={organization?.name + ' Settings'} description="Manage your organization settings" />
 
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
-                <aside className="w-full max-w-xl lg:w-48">
+                <aside className="w-full lg:w-48">
                     <nav className="flex flex-col space-y-1 space-x-0">
                         {sidebarNavItems.map((item) => (
                             <Button
@@ -57,7 +57,7 @@ export default function OrganizationLayout({ children }: PropsWithChildren) {
                 <Separator className="my-6 md:hidden" />
 
                 <div className="w-full flex-1">
-                    <section className="max-w-5xl space-y-12">{children}</section>
+                    <section className="max-w-screen space-y-12 md:max-w-5xl">{children}</section>
                 </div>
             </div>
             <CloudAccountDialogs />

@@ -33,7 +33,7 @@ export default function CloudAccountList({ organization, cloudAccounts }: CloudA
     };
 
     return (
-        <Card>
+        <Card className="w-full">
             <CardHeader>
                 <CardTitle>Active Cloud Accounts</CardTitle>
             </CardHeader>

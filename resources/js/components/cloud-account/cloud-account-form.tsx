@@ -67,7 +67,7 @@ export default function CloudAccountForm({ cloudAccount, operation = 'create' }:
                         <RadioGroup
                             onValueChange={(value) => setData('provider', value)}
                             defaultValue={data.provider}
-                            className="grid grid-cols-5 gap-4"
+                            className="grid grid-cols-2 gap-4 md:grid-cols-5"
                         >
                             <div>
                                 <RadioGroupItem value="hetzner" id="hetzner" className="peer sr-only" aria-label="Hetzner" />
