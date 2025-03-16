@@ -12,24 +12,15 @@ interface CloudAccountSelectProps {
     value?: string; // Add this to control the component from parent
 }
 
-export default function CloudAccountSelect({
-    cloudAccounts = null,
-    cloudAccount = null,
-    onSelect,
-    label = 'Cloud Account',
-    value, // Accept value from parent
-}: CloudAccountSelectProps) {
-    // Handle the change internally without state
+export default function CloudAccountSelect({ cloudAccounts = null, onSelect, label = 'Cloud Account', value }: CloudAccountSelectProps) {
     const handleValueChange = (selectedId: string) => {
         if (onSelect) {
             onSelect(selectedId);
         }
     };
 
-    // Select a default value only if needed
     const defaultValue = value;
 
-    // Don't render the component if there are no accounts
     if (!cloudAccounts?.length) {
         return <div>No Cloud Accounts</div>;
     }
