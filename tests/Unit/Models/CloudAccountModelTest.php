@@ -2,7 +2,31 @@
 
 declare(strict_types=1);
 
+use App\Enums\CloudProvider;
+use App\Enums\Region;
 use App\Models\CloudAccount;
+
+test('it has the supported regions', function (): void {
+
+    // Arrange
+    $cloudAccount = CloudAccount::factory()
+        ->createQuietly([
+            'provider' => CloudProvider::HetznerCloud->value,
+        ])
+        ->fresh();
+
+    // Act
+    $regions = $cloudAccount?->provider->supportedRegions();
+
+    // Assert
+    expect($regions)
+        ->toBe(
+            Region::providerRegionsOptions(
+                CloudProvider::HetznerCloud
+            )
+        );
+
+});
 
 test('to array', function (): void {
 

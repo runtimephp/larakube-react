@@ -30,4 +30,19 @@ enum CloudProvider: string
             self::HetznerCloud => 'HetznerLogo',
         };
     }
+
+    public function supportedRegions(): array
+    {
+        return match ($this) {
+            self::HetznerCloud => [
+                Region::HetznerNuremberg->value => Region::HetznerNuremberg->name(),
+                Region::HetznerFalkenstein->value => Region::HetznerFalkenstein->name(),
+                Region::HetznerHelsinki->value => Region::HetznerHelsinki->name(),
+                Region::HetznerSingapore->value => Region::HetznerSingapore->name(),
+                Region::HetznerHillsboro->value => Region::HetznerHillsboro->name(),
+                Region::HetznerAshburn->value => Region::HetznerAshburn->name(),
+            ],
+            default => []
+        };
+    }
 }

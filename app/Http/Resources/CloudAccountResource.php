@@ -25,6 +25,7 @@ final class CloudAccountResource extends JsonResource
             'provider' => $this->provider,
             'providerName' => $this->provider->name(),
             'providerLogo' => $this->provider->logo(),
+            'regions' => $this->provider->supportedRegions(),
             'name' => $this->name,
             'config' => [
                 'key' => $this->config['key'],
