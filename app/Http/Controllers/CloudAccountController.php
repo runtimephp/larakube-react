@@ -31,8 +31,10 @@ final class CloudAccountController
             ]);
     }
 
-    public function store(StoreCloudAccountRequest $request, Organization $organization): RedirectResponse
-    {
+    public function store(
+        StoreCloudAccountRequest $request,
+        Organization $organization
+    ): RedirectResponse {
 
         $data = [
             'organization_id' => $organization->id,
@@ -50,10 +52,14 @@ final class CloudAccountController
 
     }
 
-    public function update(UpdateCloudAccountRequest $request, Organization $organization, CloudAccount $cloudAccount): RedirectResponse
-    {
+    public function update(
+        UpdateCloudAccountRequest $request,
+        Organization $organization,
+        CloudAccount $cloudAccount
+    ): RedirectResponse {
 
         $cloudAccount->update([
+            'organization_id' => $organization->id,
             'provider' => $request->string('provider')->toString(),
             'name' => $request->string('name')->toString(),
             'config' => [
