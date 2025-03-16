@@ -30,8 +30,8 @@ export default function Clusters({ organization, cloudAccounts }: ClustersProps)
 
     const { data, setData, post } = useForm({
         name: '',
-        provider: '',
         region: 'eu-central-ng',
+        cloudAccountId: '',
     });
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -60,6 +60,7 @@ export default function Clusters({ organization, cloudAccounts }: ClustersProps)
     const resetForm = () => {
         setData('name', '');
         setData('region', 'eu-central-ng');
+        setData('cloudAccountId', cloudAccounts?.length ? cloudAccounts[0].id.toString() : '');
     };
 
     return (
@@ -93,7 +94,11 @@ export default function Clusters({ organization, cloudAccounts }: ClustersProps)
                                             <Input id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} />
                                         </div>
 
-                                        <CloudAccountSelect cloudAccounts={cloudAccounts} />
+                                        <CloudAccountSelect
+                                            cloudAccounts={cloudAccounts}
+                                            onSelect={(cloudAccountId) => setData('cloudAccountId', cloudAccountId)}
+                                            value={data.cloudAccountId}
+                                        />
 
                                         <div className="grid w-full items-center gap-1.5">
                                             <Label htmlFor="region">Region</Label>

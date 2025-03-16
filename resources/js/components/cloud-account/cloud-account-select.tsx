@@ -3,26 +3,41 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { CloudAccount } from '@/types';
 import { Cloud } from 'lucide-react';
-import React from 'react';
 
 interface CloudAccountSelectProps {
     cloudAccounts?: CloudAccount[] | null;
     cloudAccount?: CloudAccount | null;
+    onSelect?: (cloudAccountId: string) => void;
+    label?: string;
+    value?: string; // Add this to control the component from parent
 }
 
-export default function CloudAccountSelect({ cloudAccounts = null, cloudAccount = null }: CloudAccountSelectProps) {
-    const [cloudAccountId, setCloudAccountId] = React.useState<string>(cloudAccount?.id.toString || '');
+export default function CloudAccountSelect({
+    cloudAccounts = null,
+    cloudAccount = null,
+    onSelect,
+    label = 'Cloud Account',
+    value, // Accept value from parent
+}: CloudAccountSelectProps) {
+    // Handle the change internally without state
+    const handleValueChange = (selectedId: string) => {
+        if (onSelect) {
+            onSelect(selectedId);
+        }
+    };
 
-    if (!cloudAccount && cloudAccounts?.length) {
-        cloudAccount = cloudAccounts[0];
+    // Select a default value only if needed
+    const defaultValue = value;
+
+    // Don't render the component if there are no accounts
+    if (!cloudAccounts?.length) {
+        return <div>No Cloud Accounts</div>;
     }
 
-    return !cloudAccount ? (
-        <div>No Cloud Accounts</div>
-    ) : (
+    return (
         <div className="grid w-full items-center gap-2">
-            <Label htmlFor="cloudAccount">Cloud Account</Label>
-            <Select value={cloudAccountId} onValueChange={(value: string) => setCloudAccountId(value)}>
+            <Label htmlFor="cloudAccount">{label}</Label>
+            <Select value={defaultValue} onValueChange={handleValueChange}>
                 <SelectTrigger>
                     <div className="flex items-center space-x-3">
                         <SelectValue
@@ -36,11 +51,11 @@ export default function CloudAccountSelect({ cloudAccounts = null, cloudAccount 
                     </div>
                 </SelectTrigger>
                 <SelectContent>
-                    {cloudAccounts?.map((cloudAccount) => (
-                        <SelectItem key={cloudAccount.id} value={cloudAccount.id.toString()}>
+                    {cloudAccounts.map((account) => (
+                        <SelectItem key={account.id} value={account.id.toString()}>
                             <div className="flex items-center space-x-3">
-                                <CloudAccountIconResolver cloudAccount={cloudAccount} />
-                                <span>{cloudAccount.name}</span>
+                                <CloudAccountIconResolver cloudAccount={account} />
+                                <span>{account.name}</span>
                             </div>
                         </SelectItem>
                     ))}
