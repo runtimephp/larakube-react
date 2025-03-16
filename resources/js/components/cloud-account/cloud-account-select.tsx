@@ -7,15 +7,16 @@ import { Cloud } from 'lucide-react';
 interface CloudAccountSelectProps {
     cloudAccounts?: CloudAccount[] | null;
     cloudAccount?: CloudAccount | null;
-    onSelect?: (cloudAccountId: string) => void;
+    onSelect?: (cloudAccountId: string, cloudAccount?: CloudAccount) => void;
     label?: string;
     value?: string; // Add this to control the component from parent
 }
 
 export default function CloudAccountSelect({ cloudAccounts = null, onSelect, label = 'Cloud Account', value }: CloudAccountSelectProps) {
     const handleValueChange = (selectedId: string) => {
-        if (onSelect) {
-            onSelect(selectedId);
+        if (onSelect && cloudAccounts) {
+            const selectedAccount = cloudAccounts.find((account) => account.id.toString() === selectedId);
+            onSelect(selectedId, selectedAccount);
         }
     };
 

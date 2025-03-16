@@ -28,7 +28,7 @@ final class StoreClusterRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:5', 'max:255'],
-            'region' => ['required', 'string', 'min:5', 'max:255', Rule::enum(Region::class)],
+            'region' => ['required', 'integer', Rule::enum(Region::class)],
             'cloudAccountId' => ['required', 'integer', 'exists:cloud_accounts,id'],
         ];
     }

@@ -55,6 +55,7 @@ export interface CloudAccount {
     providerName: string;
     providerLogo: string;
     name: string;
+    regions: Record<string, string>;
     config: { [key: string]: unknown };
     created_at: string;
     updated_at: string;
