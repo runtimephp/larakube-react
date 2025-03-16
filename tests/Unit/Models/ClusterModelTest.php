@@ -18,6 +18,7 @@ test('to array', function (): void {
             'cloud_account_id',
             'name',
             'slug',
+            'region',
             'config',
             'created_at',
             'updated_at',

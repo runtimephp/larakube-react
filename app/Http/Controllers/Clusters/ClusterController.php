@@ -29,7 +29,7 @@ final class ClusterController
         ]);
     }
 
-    public function store(StoreClusterRequest $request, string $organization): RedirectResponse
+    public function store(StoreClusterRequest $request, Organization $organization): RedirectResponse
     {
 
         $slug = Str::slug($request->string('name')->toString());

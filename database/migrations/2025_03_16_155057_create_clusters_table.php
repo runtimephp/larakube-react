@@ -21,6 +21,7 @@ return new class extends Migration
                 ->constrained('cloud_accounts');
             $table->string('name');
             $table->string('slug');
+            $table->unsignedTinyInteger('region');
             $table->jsonb('config');
             $table->timestamps();
         });

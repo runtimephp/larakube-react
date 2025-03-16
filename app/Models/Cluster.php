@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Region;
 use App\Models\Concerns\BelongsToOrganization;
 use Carbon\Carbon;
 use Database\Factories\ClusterFactory;
@@ -36,6 +37,7 @@ final class Cluster extends Model
     public function casts(): array
     {
         return [
+            'region' => Region::class,
             'config' => 'array',
         ];
     }
