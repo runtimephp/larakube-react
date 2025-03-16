@@ -86,7 +86,7 @@ export default function CloudAccountForm({ cloudAccount, operation = 'create' }:
                                     className="border-muted hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary cursor flex flex-col items-center justify-between space-y-2.5 rounded-md border-2 bg-transparent p-4"
                                 >
                                     <DigitalOceanLogo className="h-12 w-12 rounded-xs" />
-                                    <span className="text-muted-foreground">Digital Ocean</span>
+                                    <span className="text-muted-foreground">DigitalOcean</span>
                                 </Label>
                             </div>
                         </RadioGroup>

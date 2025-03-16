@@ -24,8 +24,8 @@ enum CloudProvider: string
     public function logo(): string
     {
         return match ($this) {
-            self::AWS => 'aws.svg',
-            self::GoogleCloud => 'google-cloud.svg',
+            self::AWS => 'AWSLogo',
+            self::GoogleCloud => 'GoogleCloudLogo',
             self::DigitalOcean => 'DigitalOceanLogo',
             self::HetznerCloud => 'HetznerLogo',
         };
