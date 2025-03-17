@@ -18,7 +18,7 @@ final class GetCloudAccountsAction
 
         $query = CloudAccount::query();
 
-        if ($organization instanceof \App\Models\Organization) {
+        if ($organization instanceof Organization) {
             $query->where('organization_id', $organization->id);
         }
 

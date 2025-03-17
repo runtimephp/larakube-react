@@ -31,6 +31,9 @@ enum CloudProvider: string
         };
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function supportedRegions(): array
     {
         return match ($this) {
@@ -41,6 +44,10 @@ enum CloudProvider: string
                 Region::HetznerSingapore->value => Region::HetznerSingapore->name(),
                 Region::HetznerHillsboro->value => Region::HetznerHillsboro->name(),
                 Region::HetznerAshburn->value => Region::HetznerAshburn->name(),
+            ],
+            self::DigitalOcean => [
+                Region::DigitalOceanAmsterdam1->value => Region::DigitalOceanAmsterdam1->name(),
+                Region::DigitalOceanAmsterdam2->value => Region::DigitalOceanAmsterdam2->name(),
             ],
             default => []
         };

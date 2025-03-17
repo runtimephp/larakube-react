@@ -12,6 +12,8 @@ enum Region: int
     case HetznerSingapore = 3;
     case HetznerHillsboro = 4;
     case HetznerAshburn = 5;
+    case DigitalOceanAmsterdam1 = 6;
+    case DigitalOceanAmsterdam2 = 7;
 
     /**
      * @return array|string[]
@@ -27,6 +29,10 @@ enum Region: int
                 self::HetznerSingapore->value => self::HetznerSingapore->name(),
                 self::HetznerHillsboro->value => self::HetznerHillsboro->name(),
                 self::HetznerAshburn->value => self::HetznerAshburn->name(),
+            ],
+            CloudProvider::DigitalOcean => [
+                self::DigitalOceanAmsterdam1->value => self::DigitalOceanAmsterdam1->name(),
+                self::DigitalOceanAmsterdam2->value => self::DigitalOceanAmsterdam2->name(),
             ],
             default => []
 
@@ -45,6 +51,8 @@ enum Region: int
             self::HetznerSingapore => 'ap-southeast-sg',
             self::HetznerHillsboro => 'us-west-hb',
             self::HetznerAshburn => 'us-east-va',
+            self::DigitalOceanAmsterdam1 => 'ams2',
+            self::DigitalOceanAmsterdam2 => 'ams3',
         };
     }
 
@@ -57,6 +65,8 @@ enum Region: int
             self::HetznerSingapore => 'AP South East (Singapore)',
             self::HetznerHillsboro => 'US West (Hillsboro, OR)',
             self::HetznerAshburn => 'US East (Ashburn, VA)',
+            self::DigitalOceanAmsterdam1 => 'EU Central (Amsterdam AMS2)',
+            self::DigitalOceanAmsterdam2 => 'EU Central (Amsterdam AMS3)',
         };
     }
 }
