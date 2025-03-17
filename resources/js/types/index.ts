@@ -17,8 +17,7 @@ export interface NavGroup {
 export interface NavItem {
     title: string;
     url: string;
-    icon?: LucideIcon | null;
-    isActive?: boolean;
+    icon: string | null;
 }
 
 export interface SharedData {
@@ -45,31 +44,30 @@ export interface Organization {
     id: number;
     name: string;
     slug: string;
-    created_at: string;
-    updated_at: string;
 }
 
 export interface CloudAccount {
     id: number;
-    provider: string;
-    providerName: string;
-    providerLogo: string;
     name: string;
-    regions: Record<string, string>;
-    config: { [key: string]: unknown };
-    created_at: string;
-    updated_at: string;
+    providerName: string;
 }
 
 export interface Cluster {
     id: number;
     name: string;
-    region: number;
+    slug: string;
     regionName: string;
-    cloudAccountId: number;
     cloudAccount: CloudAccount;
     organization: Organization;
     config: { [key: string]: unknown };
+    created_at: string;
+    updated_at: string;
+}
+
+export interface Deployment {
+    id: number;
+    name: string;
+    status: string;
     created_at: string;
     updated_at: string;
 }

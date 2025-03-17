@@ -20,6 +20,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read array<string, mixed> $config
  * @property-read User $owner
  * @property-read Collection<int, User> $users
+ * @property-read Collection<int, CloudAccount> $cloudAccounts
+ * @property-read Collection<int, Cluster> $clusters
  */
 final class Organization extends Model
 {
@@ -59,5 +61,13 @@ final class Organization extends Model
     public function cloudAccounts(): HasMany
     {
         return $this->hasMany(CloudAccount::class);
+    }
+
+    /**
+     * @return HasMany<Cluster, $this>
+     */
+    public function clusters(): HasMany
+    {
+        return $this->hasMany(Cluster::class);
     }
 }

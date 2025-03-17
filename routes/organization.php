@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CloudAccountController;
 use App\Http\Controllers\Clusters\ClusterController;
+use App\Http\Controllers\Clusters\ShowClusterController;
+use App\Http\Controllers\Clusters\ShowClusterDeploymentsController;
+use App\Http\Controllers\Clusters\ShowClusterInfrastructureController;
 use App\Http\Controllers\Organizations\OrganizationController;
 use App\Http\Controllers\Organizations\SwitchOrganizationController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +23,15 @@ Route::prefix('clusters')->as('clusters.')->group(function () {
 
     Route::post('/', [ClusterController::class, 'store'])
         ->name('store');
+
+    Route::get('/{cluster}', [ShowClusterController::class, 'index'])
+        ->name('show');
+
+    Route::get('/{cluster}/deployments', [ShowClusterDeploymentsController::class, 'index'])
+        ->name('deployments');
+
+    Route::get('/{cluster}/infrastructure', [ShowClusterInfrastructureController::class, 'index'])
+        ->name('infrastructure');
 
 });
 
