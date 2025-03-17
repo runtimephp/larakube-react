@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Clusters;
 use App\Actions\CloudAccount\GetCloudAccountsAction;
 use App\Http\Requests\Clusters\StoreClusterRequest;
 use App\Http\Resources\CloudAccountResource;
+use App\Http\Resources\ClusterResource;
 use App\Http\Resources\OrganizationResource;
 use App\Models\Cluster;
 use App\Models\Organization;
@@ -23,9 +24,15 @@ final class ClusterController
 
         $cloudAccounts = $action->handle($organization);
 
+        $clusters = Cluster::query()
+            ->where('organization_id', $organization->id)
+            ->with('cloudAccount')
+            ->get();
+
         return Inertia::render('clusters/index', [
             'organization' => OrganizationResource::make($organization),
             'cloudAccounts' => CloudAccountResource::collection($cloudAccounts),
+            'clusters' => ClusterResource::collection($clusters),
         ]);
     }
 

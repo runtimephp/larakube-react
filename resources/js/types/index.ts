@@ -60,3 +60,16 @@ export interface CloudAccount {
     created_at: string;
     updated_at: string;
 }
+
+export interface Cluster {
+    id: number;
+    name: string;
+    region: number;
+    regionName: string;
+    cloudAccountId: number;
+    cloudAccount: CloudAccount;
+    organization: Organization;
+    config: { [key: string]: unknown };
+    created_at: string;
+    updated_at: string;
+}

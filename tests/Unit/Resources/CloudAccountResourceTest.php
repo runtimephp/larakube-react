@@ -30,6 +30,7 @@ test('to array', function (): void {
             'provider',
             'providerName',
             'providerLogo',
+            'regions',
             'name',
             'config',
         ]);

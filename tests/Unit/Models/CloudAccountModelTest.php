@@ -6,6 +6,22 @@ use App\Enums\CloudProvider;
 use App\Enums\Region;
 use App\Models\CloudAccount;
 
+test('it has many clusters', function (): void {
+
+    // Arrange
+    $cloudAccount = CloudAccount::factory()
+        ->hasClusters(3)
+        ->createQuietly();
+
+    // Act
+    $clusters = $cloudAccount->clusters;
+
+    // Assert
+    expect($clusters)
+        ->toHaveCount(3);
+
+});
+
 test('it has the supported regions', function (): void {
 
     // Arrange

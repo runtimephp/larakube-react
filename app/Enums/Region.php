@@ -14,26 +14,6 @@ enum Region: int
     case HetznerAshburn = 5;
 
     /**
-     * @return array<int, Region>
-     */
-    public static function providerRegions(CloudProvider $provider): array
-    {
-        return match ($provider) {
-
-            CloudProvider::HetznerCloud => [
-                self::HetznerNuremberg,
-                self::HetznerFalkenstein,
-                self::HetznerHelsinki,
-                self::HetznerSingapore,
-                self::HetznerHillsboro,
-                self::HetznerAshburn,
-            ],
-            default => []
-
-        };
-    }
-
-    /**
      * @return array|string[]
      */
     public static function providerRegionsOptions(CloudProvider $provider): array
@@ -53,6 +33,9 @@ enum Region: int
         };
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function code(): string
     {
         return match ($this) {

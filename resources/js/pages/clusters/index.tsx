@@ -1,26 +1,23 @@
+import CloudAccountIconResolver from '@/components/cloud-account/cloud-account-icon-resolver';
 import ClusterForm from '@/components/cluster/cluster-form';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import AppLayout from '@/layouts/app-layout';
-import type { BreadcrumbItem, CloudAccount, Organization } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
-import { Server } from 'lucide-react';
-import React, { FormEventHandler } from 'react';
+import type { BreadcrumbItem, CloudAccount, Cluster, Organization } from '@/types';
+import { Head } from '@inertiajs/react';
+import { Cloud, MapPin, Server } from 'lucide-react';
+import React from 'react';
 
 interface ClustersProps {
     organization: Organization;
     cloudAccounts?: CloudAccount[];
+    clusters: Cluster[];
 }
 
-export default function Clusters({ organization, cloudAccounts }: ClustersProps) {
+export default function Clusters({ organization, cloudAccounts, clusters }: ClustersProps) {
     const [open, setOpen] = React.useState(false);
-
-    const { data, setData, post } = useForm({
-        name: '',
-        region: 'eu-central-ng',
-        cloudAccountId: '',
-    });
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -33,29 +30,11 @@ export default function Clusters({ organization, cloudAccounts }: ClustersProps)
         },
     ];
 
-    const submit: FormEventHandler = (e) => {
-        e.preventDefault();
-
-        post(route('clusters.index', { organization: organization?.slug }), {
-            preserveScroll: true,
-            onSuccess: () => {
-                resetForm();
-                setOpen(false);
-            },
-        });
-    };
-
-    const resetForm = () => {
-        setData('name', '');
-        setData('region', 'eu-central-ng');
-        setData('cloudAccountId', cloudAccounts?.length ? cloudAccounts[0].id.toString() : '');
-    };
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Clusters" />
 
-            <div className="mx-auto w-full max-w-7xl px-4 py-6">
+            <div className="mx-auto w-full max-w-7xl space-y-12 px-4 py-6">
                 <Heading title="Clusters" description="Manage your clusters" />
                 <div className="flex items-center justify-between">
                     <div>Filters</div>
@@ -77,6 +56,40 @@ export default function Clusters({ organization, cloudAccounts }: ClustersProps)
                             </DialogContent>
                         </Dialog>
                     </div>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {clusters.map((cluster) => (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>
+                                    <div className="flex items-center justify-between">
+                                        <div className="flex items-center">
+                                            <Server className="mr-2 h-5 w-5" />
+                                            <span className="text-sm">{cluster.name}</span>
+                                        </div>
+                                        <span className="h-5 w-5 shrink-0">
+                                            <CloudAccountIconResolver cloudAccount={cluster.cloudAccount} />
+                                        </span>
+                                    </div>
+                                </CardTitle>
+                                <CardContent className="-mx-6 mt-2 md:ml-1">
+                                    <div className="flex flex-col justify-center space-y-2.5">
+                                        <div className="flex items-center space-x-2">
+                                            <Cloud className="text-muted-foreground h-5 w-5 shrink-0" />
+                                            <span className="text-sm">{cluster.cloudAccount.name}</span>
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <MapPin className="text-muted-foreground h-5 w-5 shrink-0" />
+                                            <div className="text-sm">
+                                                <span className="text-ellipsis">{cluster.regionName}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </CardHeader>
+                        </Card>
+                    ))}
                 </div>
             </div>
         </AppLayout>
